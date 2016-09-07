@@ -27,8 +27,8 @@ from helpers import training, test, draw_W_histories, draw_mean_se_history, draw
 
 if __name__ == '__main__':
     # Load MNIST dataset
-    training_dataset = MnistTrainingDataset('./mnist')
-    test_dataset = MnistTestDataset('./mnist')
+    training_dataset = MnistTrainingDataset('./mnist', 1, 0)
+    test_dataset = MnistTestDataset('./mnist', 1, 0)
 
     # Create Deep Neural Network for nmist classification
     classifier = Classifier('logistic', training_dataset.img_size, d_se, 0.15)

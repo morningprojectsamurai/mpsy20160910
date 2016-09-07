@@ -23,9 +23,11 @@ from mnist import MNIST
 
 
 class MnistDataset:
-    def __init__(self, name, mnist_dir):
+    def __init__(self, name, mnist_dir, val_collect, val_wrong):
         self._name = name
         self._mnist_dir = mnist_dir
+        self._val_collect = val_collect
+        self._val_wrong = val_wrong
         self._mnist = MNIST(self._mnist_dir)
         self._img_tensor, self._label_tensor = self._load_data()
 
@@ -66,8 +68,8 @@ class MnistDataset:
     def _labels_to_tensor(self, labels):
         def label_to_matrix(label):
             t = np.zeros(shape=(10, 1))
-            t.fill(-1.0)
-            t[label, 0] = 1.0
+            t.fill(self._val_wrong)
+            t[label, 0] = self._val_collect
             return t
         return np.array([label_to_matrix(label) for label in labels])
 
@@ -80,16 +82,16 @@ class MnistDataset:
 
 
 class MnistTrainingDataset(MnistDataset):
-    def __init__(self, mnist_dir):
-        super(MnistTrainingDataset, self).__init__('training', mnist_dir)
+    def __init__(self, mnist_dir, val_collect, val_wrong):
+        super(MnistTrainingDataset, self).__init__('training', mnist_dir, val_collect, val_wrong)
 
     def _load_mnist_data(self):
         return self._mnist.load_training()
 
 
 class MnistTestDataset(MnistDataset):
-    def __init__(self, mnist_dir):
-        super(MnistTestDataset, self).__init__('test', mnist_dir)
+    def __init__(self, mnist_dir, val_collect, val_wrong):
+        super(MnistTestDataset, self).__init__('test', mnist_dir, val_collect, val_wrong)
 
     def _load_mnist_data(self):
         return self._mnist.load_testing()
