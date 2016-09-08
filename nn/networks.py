@@ -120,8 +120,8 @@ class Network:
 
     @classmethod
     def from_json(cls, json_data):
-        network = Network(json_data['meta']['name'], json_data['meta']['n_input'],
-                          json_data['meta']['error_func'], json_data['meta']['epsilon'])
+        network = cls(json_data['meta']['name'], json_data['meta']['n_input'],
+                      json_data['meta']['error_func'], json_data['meta']['epsilon'])
         for layer in json_data['layers']:
             network.add_layer(layer['type'], len(layer['W']))
             network.layers[-1].W = np.array(layer['W'])
