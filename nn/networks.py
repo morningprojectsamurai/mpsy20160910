@@ -115,7 +115,7 @@ class Network:
                          'n_input': self._n_input,
                          'error_func': self.error_func,
                          'epsilon': self.epsilon},
-                'layers': [{'type': get_layer_name(layer), 'W': layer.W.to_list(), 'b': layer.b.to_list()}
+                'layers': [{'type': get_layer_name(layer), 'W': layer.W.tolist(), 'b': layer.b.tolist()}
                            for layer in self._layers]}
 
     @classmethod
