@@ -207,4 +207,5 @@ fabric.properties
 
 img_*
 mnist/*
+network_jsons/*
 
