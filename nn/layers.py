@@ -19,7 +19,6 @@
 
 
 import numpy as np
-
 from nn.activation_funcs import logistic, d_logistic, tanh, d_tanh, rectifier, d_rectifier
 
 
