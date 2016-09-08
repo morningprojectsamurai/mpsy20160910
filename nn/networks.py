@@ -23,6 +23,12 @@ from nn.layers import RectifierLayer, TanhLayer, LogisticLayer
 
 
 class Network:
+    _LAYER_CLASSES = {
+        'logistic': LogisticLayer,
+        'tanh': TanhLayer,
+        'rectifier': RectifierLayer
+    }
+
     def __init__(self, name, n_input, d_error_func, epsilon):
         self._name = name
         self._n_input = n_input
@@ -48,14 +54,11 @@ class Network:
 
     def add_layer(self, type, n_output):
         n_prev_output = self._layers[-1].n_output if self._layers else self._n_input
-        if type == 'logistic':
-            layer = LogisticLayer(n_output, n_prev_output)
-        elif type == 'tanh':
-            layer = TanhLayer(n_output, n_prev_output)
-        elif type == 'rectifier':
-            layer = RectifierLayer(n_output, n_prev_output)
-        else:
-            raise Exception('Layer type must be sigmoid, tanh or rectifier.')
+        try:
+            layer = self._LAYER_CLASSES[type](n_output, n_prev_output)
+        except KeyError:
+            raise Exception('Layer type must be %s or %s.' %
+                            (', '.join(self._LAYER_CLASSES.keys()[:-1]), self._LAYER_CLASSES[-1]))
         self._layers.append(layer)
 
     def propagate_forward(self, input_datum):
