@@ -38,11 +38,7 @@ class Network:
         self._name = name
         self._n_input = n_input
         self._layers = []
-        try:
-            self._d_error_func = self._D_ERROR_FUNCS[error_func_name]
-        except KeyError:
-            print('error_func_name must be %s or %s' %
-                  (', '.join(self._D_ERROR_FUNCS.keys()[:-1]), list(self._D_ERROR_FUNCS.keys())[-1]))
+        self._d_error_func = self._get_d_error_func(error_func_name)
         self._epsilon = epsilon
 
     @property
@@ -60,6 +56,24 @@ class Network:
     @epsilon.setter
     def epsilon(self, value):
         self._epsilon = value
+
+    @property
+    def error_func(self):
+        for name, func in self._D_ERROR_FUNCS.items():
+            if func == self._d_error_func:
+                return name
+        return None
+
+    @error_func.setter
+    def error_func(self, name):
+        self._d_error_func = self._get_d_error_func(name)
+
+    def _get_d_error_func(self, name):
+        try:
+            return self._D_ERROR_FUNCS[name]
+        except KeyError:
+            print('error_func_name must be %s or %s' %
+                  (', '.join(self._D_ERROR_FUNCS.keys()[:-1]), list(self._D_ERROR_FUNCS.keys())[-1]))
 
     def add_layer(self, type, n_output):
         n_prev_output = self._layers[-1].n_output if self._layers else self._n_input
