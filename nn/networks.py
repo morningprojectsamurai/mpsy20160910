@@ -115,7 +115,8 @@ class Network:
                          'n_input': self._n_input,
                          'error_func': self.error_func,
                          'epsilon': self.epsilon},
-                'layers': [{'type': get_layer_name(layer), 'W': layer.W, 'b': layer.b} for layer in self._layers]}
+                'layers': [{'type': get_layer_name(layer), 'W': layer.W.to_list(), 'b': layer.b.to_list()}
+                           for layer in self._layers]}
 
     @classmethod
     def from_json(cls, json_data):
