@@ -25,12 +25,18 @@ from nn.activation_funcs import logistic, d_logistic, tanh, d_tanh, rectifier, d
 
 class BaseLayer:
     def __init__(self, n_output, n_prev_output, f, df):
-        self._W = np.random.randn(n_output, n_prev_output)
-        self._b = np.random.randn(n_output, 1)
+        self._W = self._init_W(n_output, n_prev_output)
+        self._b = self._init_b(n_output)
         self._f = f
         self._df = df
         self._y = None
         self._delta = None
+
+    def _init_W(self, n_output, n_prev_output, *args, **kwargs):
+        return np.random.randn(n_output, n_prev_output)
+
+    def _init_b(self, n_output, *args, **kwargs):
+        return np.random.randn(n_output, 1)
 
     @property
     def n_output(self):
