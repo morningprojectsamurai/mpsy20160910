@@ -31,7 +31,7 @@ if __name__ == '__main__':
     test_dataset = MnistTestDataset('./mnist', 1, -1)
 
     # Create Deep Neural Network
-    classifier = Classifier('tanh', training_dataset.img_size, d_se, 0.15)
+    classifier = Classifier('tanh', training_dataset.img_size, 'se', 0.15)
     classifier.add_layer('tanh', 200)
     classifier.add_layer('tanh', 10)
 

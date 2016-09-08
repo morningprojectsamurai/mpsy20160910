@@ -31,7 +31,7 @@ if __name__ == '__main__':
     test_dataset = MnistTestDataset('./mnist', 1, 0)
 
     # Create Deep Neural Network for nmist classification
-    classifier = Classifier('logistic', training_dataset.img_size, d_se, 0.15)
+    classifier = Classifier('logistic', training_dataset.img_size, 'se', 0.15)
     classifier.add_layer('logistic', 200)
     classifier.add_layer('logistic', 10)
 

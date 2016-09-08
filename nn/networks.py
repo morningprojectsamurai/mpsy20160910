@@ -19,6 +19,7 @@
 
 
 import numpy as np
+from nn.error_funcs import d_se
 from nn.layers import RectifierLayer, TanhLayer, LogisticLayer
 
 
@@ -29,11 +30,19 @@ class Network:
         'rectifier': RectifierLayer
     }
 
-    def __init__(self, name, n_input, d_error_func, epsilon):
+    _D_ERROR_FUNCS = {
+        'se': d_se,
+    }
+
+    def __init__(self, name, n_input, error_func_name, epsilon):
         self._name = name
         self._n_input = n_input
         self._layers = []
-        self._d_error_func = d_error_func
+        try:
+            self._d_error_func = self._D_ERROR_FUNCS[error_func_name]
+        except KeyError:
+            print('error_func_name must be %s or %s' %
+                  (', '.join(self._D_ERROR_FUNCS.keys()[:-1]), list(self._D_ERROR_FUNCS.keys())[-1]))
         self._epsilon = epsilon
 
     @property
@@ -58,7 +67,7 @@ class Network:
             layer = self._LAYER_CLASSES[type](n_output, n_prev_output)
         except KeyError:
             raise Exception('Layer type must be %s or %s.' %
-                            (', '.join(self._LAYER_CLASSES.keys()[:-1]), self._LAYER_CLASSES[-1]))
+                            (', '.join(self._LAYER_CLASSES.keys()[:-1]), list(self._LAYER_CLASSES.keys())[-1]))
         self._layers.append(layer)
 
     def propagate_forward(self, input_datum):
