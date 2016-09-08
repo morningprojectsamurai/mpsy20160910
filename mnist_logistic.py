@@ -19,7 +19,6 @@
 
 
 from matplotlib import pyplot as plt
-from nn.error_funcs import d_se
 from nn.networks import Classifier
 from dataset import MnistTrainingDataset, MnistTestDataset
 from helpers import training, test, draw_W_histories, draw_mean_se_history, draw_cpr_history
