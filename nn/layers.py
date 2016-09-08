@@ -40,6 +40,18 @@ class BaseLayer:
     def W(self):
         return self._W
 
+    @W.setter
+    def W(self, value):
+        self._W = value
+
+    @property
+    def b(self):
+        return self._b
+
+    @b.setter
+    def b(self, value):
+        self._b = value
+
     @property
     def ave_W(self):
         return np.average(np.abs(self._W))
