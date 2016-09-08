@@ -18,6 +18,8 @@
 # (c) Junya Kaneko <jyuneko@hotmail.com>
 
 
+import os
+import json
 import numpy as np
 from matplotlib import pyplot as plt
 from tqdm import tqdm
@@ -87,4 +89,10 @@ def training(network, dataset, n_round):
 # Test network
 def test(network, dataset):
     return calc_mean_se_and_cpr(network, dataset)
+
+
+# Save network
+def save_network(network, base_dir):
+    with open('%s.json' % os.path.join(base_dir, network.name), 'w') as f:
+        json.dump(network.to_json(), f)
 
