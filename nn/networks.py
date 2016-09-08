@@ -17,7 +17,7 @@
 #
 # (c) Junya Kaneko <jyuneko@hotmail.com>
 
-from io import BytesIO
+
 import numpy as np
 from nn.error_funcs import d_se
 from nn.layers import RectifierLayer, TanhLayer, LogisticLayer
