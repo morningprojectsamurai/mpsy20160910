@@ -17,7 +17,7 @@
 #
 # (c) Junya Kaneko <jyuneko@hotmail.com>
 
-
+from io import BytesIO
 import numpy as np
 from nn.error_funcs import d_se
 from nn.layers import RectifierLayer, TanhLayer, LogisticLayer
@@ -103,6 +103,29 @@ class Network:
         for layer in self._layers:
             layer.update(input_datum if prev_layer is None else prev_layer.y, self._epsilon)
             prev_layer = layer
+
+    def to_json(self):
+        def get_layer_name(layer):
+            for key, cls in self._LAYER_CLASSES.items():
+                if isinstance(layer, cls):
+                    return key
+            return Exception('Unknown layer type')
+
+        return {'meta': {'name': self.name,
+                         'n_input': self._n_input,
+                         'error_func': self.error_func,
+                         'epsilon': self.epsilon},
+                'layers': [{'type': get_layer_name(layer), 'W': layer.W, 'b': layer.b} for layer in self._layers]}
+
+    @classmethod
+    def from_json(cls, json_data):
+        network = Network(json_data['meta']['name'], json_data['meta']['n_input'],
+                          json_data['meta']['error_func'], json_data['meta']['epsilon'])
+        for layer in json_data['layers']:
+            network.add_layer(layer['type'], len(layer['W']))
+            network.layers[-1].W = np.array(layer['W'])
+            network.layers[-1].b = np.array(layer['b'])
+        return network
 
 
 class Classifier(Network):
