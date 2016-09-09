@@ -19,6 +19,7 @@
 
 
 import numpy as np
+from copy import deepcopy
 
 
 def logistic(s):
@@ -29,19 +30,22 @@ def d_logistic(y):
     return y * (1 - y)
 
 
-def tanh(s):
-    return np.tanh(s)
+def tanh(s, alpha, beta):
+    return alpha * np.tanh(beta * s)
 
 
-def d_tanh(s):
-    return 1 - np.power(np.tanh(s), 2)
+def d_tanh(s, alpha, beta):
+    return alpha * beta * (1 - np.power(np.tanh(beta * s), 2))
 
 
 def rectifier(s):
-    return np.max(np.array([s, np.zeros(shape=s.shape)]), axis=0)
+    val = deepcopy(s)
+    val[val < 0.0] = 0.0
+    return val
 
 
 def d_rectifier(s):
-    d = np.zeros(shape=s.shape)
-    d[s > 0] = 1.0
-    return d
+    val = deepcopy(s)
+    val[val > 0.0] = 1.0
+    val[val <= 0.0] = 0.0
+    return val
