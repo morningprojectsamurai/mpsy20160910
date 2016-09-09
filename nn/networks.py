@@ -75,10 +75,10 @@ class Network:
             print('error_func_name must be %s or %s' %
                   (', '.join(self._D_ERROR_FUNCS.keys()[:-1]), list(self._D_ERROR_FUNCS.keys())[-1]))
 
-    def add_layer(self, type, n_output):
+    def add_layer(self, type, n_output, **kwargs):
         n_prev_output = self._layers[-1].n_output if self._layers else self._n_input
         try:
-            layer = self._LAYER_CLASSES[type](n_output, n_prev_output)
+            layer = self._LAYER_CLASSES[type](n_output, n_prev_output, **kwargs)
         except KeyError:
             raise Exception('Layer type must be %s or %s.' %
                             (', '.join(self._LAYER_CLASSES.keys()[:-1]), list(self._LAYER_CLASSES.keys())[-1]))
