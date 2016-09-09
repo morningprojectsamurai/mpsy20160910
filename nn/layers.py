@@ -92,8 +92,14 @@ class LogisticLayer(BaseLayer):
 
 
 class TanhLayer(BaseLayer):
-    def __init__(self, n_output, n_prev_output):
-        super().__init__(n_output, n_prev_output, tanh, d_tanh)
+    def __init__(self, n_output, n_prev_output, alpha, beta):
+        def _tanh(s):
+            return tanh(s, alpha, beta)
+
+        def _d_tanh(s):
+            return d_tanh(s, alpha, beta)
+
+        super().__init__(n_output, n_prev_output, _tanh, _d_tanh)
 
 
 class RectifierLayer(BaseLayer):
